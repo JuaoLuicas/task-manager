@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: #004e98;
+  --secondary-color: #3a6ea5;
+  --extra-color: #ff6700;
+  --extra-color-lighter: #ff9d5c;
+
+  --indigo-dye: #274060ff;
+  --lapis-lazuli: #335c81ff;
+  --argentinian-blue: #65afffff;
+  --space-cadet: #1b2845ff;
+  --united-nations-blue: #5899e2ff;
+  --white-tone-1: #f5f5f5;
+  --white-tone-2: #ebebeb;
+}
+
+@font-face {
+  font-family: "Satoshi-Light";
+  src: url("./assets/fonts/satoshi/light/Satoshi-Light.woff2") format("woff2"),
+    url("./assets/fonts/satoshi/light/Satoshi-Light.woff") format("woff"),
+    url("./assets/fonts/satoshi/light/Satoshi-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Satoshi-Regular";
+  src: url("./assets/fonts/satoshi/regular/Satoshi-Regular.woff2")
+      format("woff2"),
+    url("./assets/fonts/satoshi/regular/Satoshi-Regular.woff") format("woff"),
+    url("./assets/fonts/satoshi/regular/Satoshi-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Satoshi-Bold";
+  src: url("./assets/fonts/satoshi/bold/Satoshi-Bold.woff2") format("woff2"),
+    url("./assets/fonts/satoshi/bold/Satoshi-Bold.woff") format("woff"),
+    url("./assets/fonts/satoshi/bold/Satoshi-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Satoshi-Black";
+  src: url("./assets/fonts/satoshi/black/Satoshi-Black.woff2") format("woff2"),
+    url("./assets/fonts/satoshi/black/Satoshi-Black.woff") format("woff"),
+    url("./assets/fonts/satoshi/black/Satoshi-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+@layer utilities {
+  @keyframes open-animation {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes close-animation {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes open-animation-height {
+    0% {
+      height: 0;
+    }
+    100% {
+      height: auto;
+    }
+  }
+
+  @keyframes scale-animation {
+    0% {
+      transform: scale(0);
+    }
+    75% {
+      transform: scale(1.5);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes scale-animation-reverse {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    80% {
+      opacity: 1;
+      transform: scale(1.01);
+    }
+
+    100% {
+      opacity: 0;
+      transform: scale(0);
+    }
+  }
+
+  @keyframes load-bar {
+    0% {
+      width: 0;
+    }
+
+    100% {
+      width: 100%;
+    }
+  }
+
+  @keyframes select-tab {
+    0% {
+      height: 25%;
+    }
+
+    100% {
+      height: 100%;
+    }
+  }
+
+  .open-animation {
+    animation: open-animation ease-in;
+  }
+
+  .close-animation {
+    animation: close-animation ease-out;
+  }
+
+  .scale-animation {
+    animation: scale-animation 1s cubic-bezier(0.48, 1.62, 0.5, 0.46);
+  }
+
+  .scale-animation-reverse {
+    animation: scale-animation-reverse 1s ease-out;
+  }
+
+  .open-animation-height {
+    animation: open-animation-height 0.2s ease-in forwards;
+  }
+
+  .load-bar {
+    animation: load-bar 2.5s ease-in-out;
+  }
+
+  .select-tab {
+    animation: select-tab 0.3s ease-in;
+  }
+}
