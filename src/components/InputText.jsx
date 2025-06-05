@@ -5,7 +5,7 @@ function InputText(props) {
     const labelIsActive = isSelected;
 
     const handleInputChange = (event) => {
-    const formattedValue = props.textFormatter(event.target.value);
+    const formattedValue = props.textFormatter(event.target.value, props.maxLength);
     props.setVariable(formattedValue);
   };
 

@@ -1,4 +1,11 @@
-import { BadgeCheck, CheckCircle2, CheckIcon, ChevronRightIcon, SpellCheckIcon, Trash2 } from "lucide-react";
+import {
+  BadgeCheck,
+  CheckCircle2,
+  CheckIcon,
+  ChevronRightIcon,
+  SpellCheckIcon,
+  Trash2,
+} from "lucide-react";
 import AddTaskButton from "../components/AddTaskButton";
 import TaskStatus from "../components/TaskStatus";
 import Select from "../components/Select";
@@ -6,10 +13,11 @@ import { useState } from "react";
 import TaskDetailsModal from "../components/TaskDetailsModal";
 
 function TaskListPage(props) {
-  const [showDetails, setShowDetails] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showDetailsInfo, setShowDetailsInfo] = useState();
 
   return (
-    <div className='bg-white flex flex-col items-center transition duration-200 shadow-lg rounded-lg'>
+    <div className="bg-white flex flex-col items-center transition duration-200 shadow-lg rounded-lg">
       <AddTaskButton addTask={props.addTask} setAlert={props.setAlert} />
 
       {props.tasks.length > 0 && (
@@ -25,19 +33,21 @@ function TaskListPage(props) {
                 props.deletedTask.includes(task.id)
                   ? "scale-animation-reverse"
                   : "opacity-100"
-              }`}
+              } ${props.addedTask.includes(task.id) ? "scale-animation" : ""}`}
             >
               <div
                 className={`w-full grid grid-cols-2 border-argentinian-blue border-[2px] text-argentinian-blue p-2 rounded-md text-left font-bold gap-2 transition duration-100 hover:border-lapis-lazuli cursor-pointer`}
               >
                 <div>
                   <p
-                    className={`text-left flex gap-2 transition duration-300 ${
-                      task.isCompleted ? "text-green-500" : ""
+                    className={`text-left flex gap-2 transition duration-300 overflow-auto break-all ${
+                      task.isCompleted
+                        ? "text-green-500 line-through italic"
+                        : ""
                     }`}
                   >
                     {task.isCompleted ? (
-                      <CheckCircle2 className='scale-animation' />
+                      <CheckCircle2 className="scale-animation" />
                     ) : (
                       ""
                     )}
@@ -53,25 +63,47 @@ function TaskListPage(props) {
                   </p>
                 </div>
 
-                <div className='mr-2 gap-2 flex justify-end self-center'>
-                  <TaskStatus status={task.statusNumber} h="20px" w="20px"/>
+                <div className="mr-2 gap-2 flex justify-end self-center">
+                  <TaskStatus status={task.statusNumber} h="20px" w="20px" />
                   <Select
                     w={"150px"}
                     h={"30px"}
                     placeholder={task.statusName}
                     changeTaskStatus={props.changeTaskStatus}
                     taskId={task.id}
-                    option1={["Não concluído", 0, <TaskStatus status={0} h="12px" w="12px"/>, false]}
-                    option2={["Em andamento", 1, <TaskStatus status={1} h="12px" w="12px"/>, false]}
-                    option3={["Concluído", 2, <TaskStatus status={2} h="12px" w="12px"/>, true]}
+                    option1={[
+                      "Não iniciado",
+                      0,
+                      <TaskStatus status={0} h="12px" w="12px" />,
+                      false,
+                    ]}
+                    option2={[
+                      "Em andamento",
+                      1,
+                      <TaskStatus status={1} h="12px" w="12px" />,
+                      false,
+                    ]}
+                    option3={[
+                      "Concluído",
+                      2,
+                      <TaskStatus status={2} h="12px" w="12px" />,
+                      true,
+                    ]}
                   />
                 </div>
-                
               </div>
               <button
                 //onClick={() => seeMore(task)}
-                onClick={() => setShowDetails(true)}
-                className='bg-argentinian-blue hover:bg-lapis-lazuli transition text-white p-2 rounded-md'
+                onClick={() => {
+                  setShowDetailsInfo({
+                    taskTitle: task.title,
+                    taskDescription: task.description,
+                    taskDate: task.date,
+                    statusNumber: task.statusNumber,
+                  });
+                  setShowDetailsModal(true);
+                }}
+                className="bg-argentinian-blue hover:bg-lapis-lazuli transition text-white p-2 rounded-md"
               >
                 <ChevronRightIcon />
               </button>
@@ -86,16 +118,19 @@ function TaskListPage(props) {
               >
                 <Trash2 />
               </button>
-
-              {showDetails && (
-              <TaskDetailsModal setModal={setShowDetails} title={task.title} description={task.description} date={task.date} statusNumber={task.statusNumber}/>
-              )}
             </li>
           ))}
         </ul>
       )}
-
-
+      {showDetailsModal && (
+        <TaskDetailsModal
+          setModal={setShowDetailsModal}
+          title={showDetailsInfo.taskTitle}
+          description={showDetailsInfo.taskDescription}
+          date={showDetailsInfo.taskDate}
+          statusNumber={showDetailsInfo.statusNumber}
+        />
+      )}
     </div>
   );
 }

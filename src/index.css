@@ -91,12 +91,15 @@
 
   @keyframes scale-animation {
     0% {
+      opacity: 0;
       transform: scale(0);
     }
     75% {
-      transform: scale(1.5);
+      opacity: 1;
+      transform: scale(1.01);
     }
     100% {
+      opacity: 1;
       transform: scale(1);
     }
   }
@@ -107,9 +110,9 @@
       transform: scale(1);
     }
 
-    80% {
+    35% {
       opacity: 1;
-      transform: scale(1.01);
+      transform: scale(1.02);
     }
 
     100% {
@@ -138,6 +141,9 @@
     }
   }
 
+  @keyframes height-animation {
+  }
+
   .open-animation {
     animation: open-animation ease-in;
   }
@@ -151,7 +157,7 @@
   }
 
   .scale-animation-reverse {
-    animation: scale-animation-reverse 1s ease-out;
+    animation: scale-animation-reverse 1s cubic-bezier(0.48, 1.62, 0.5, 0.46);
   }
 
   .open-animation-height {
@@ -164,5 +170,9 @@
 
   .select-tab {
     animation: select-tab 0.3s ease-in;
+  }
+
+  .height-animation {
+    animation: height-animation 0.5 ease-in;
   }
 }

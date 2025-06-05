@@ -10,7 +10,7 @@ function AlertWindow(props) {
     }
   }, [props.isVisible]);
 
-  const baseClass = `absolute bottom-5 left-5 rounded-md flex flex-col bg-white-tone-2 items-center border-[3px] text-white transition ease-in-out duration-500 z-50`;
+  const baseClass = `absolute bottom-5 left-5 rounded-md flex flex-col bg-white-tone-2 items-center border-[2px] border-b-0 text-white transition ease-in-out duration-500 z-50 shadow-lg`;
   const visibilityClass = props.isVisible
     ? "translate-x-0"
     : "-translate-x-[200%]";

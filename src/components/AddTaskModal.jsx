@@ -1,21 +1,38 @@
 import { useState } from "react";
-import { X } from "lucide-react";
+import { ReceiptRussianRuble, X } from "lucide-react";
 import AlertWindow from "./AlertWindow";
 import InputText from "./InputText";
 import InputTextArea from "./InputTextArea";
 import InputDate from "./InputDate";
 
+
 function AddTaskModal(props) {
+  // Variáveis principais
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [taskDate, setTaskDate] = useState("");
+  const currentDate = new Date;
+  const maxTitleLength = 50;
+  const maxDescriptionLength = 300;
 
-  function formatTaskTitle(taskTitle) {
-    return taskTitle.charAt(0).toUpperCase() + taskTitle.slice(1);
+  function formatTaskTitle(taskTitle, maxLength) {
+    const formattedTitle = taskTitle.charAt(0).toUpperCase() + taskTitle.slice(1);
+
+    if (formattedTitle.length > maxLength) {
+      formattedTitle = formattedTitle.slice(0, maxLength);
+    }
+
+    return formattedTitle;
   }
 
-  function formatTaskDescription(taskDescription) {
-    return taskDescription.charAt(0).toUpperCase() + taskDescription.slice(1);
+  function formatTaskDescription(taskDescription, maxLength) {
+    const formattedDescription = taskDescription.charAt(0).toUpperCase() + taskDescription.slice(1);
+
+    if (formattedDescription.length > maxLength) {
+      formattedDescription = formattedDescription.slice(0, maxLength);
+    }
+
+    return formattedDescription;
   }
 
   function formatTaskDate(taskDate) {
@@ -38,7 +55,25 @@ function AddTaskModal(props) {
     return finalDate;
   }
 
+  function validateTaskTitle(taskTitle) {
+    if (taskTitle.trim() === "") {
+      return false;
+    }
+    return true;
+  }
+
+  function validateTaskDescription(taskDescription) {
+    if (taskTitle.trim() === "") {
+      return false;
+    }
+    return true;
+  }
+
   function validateTaskDate(taskDate) {
+    if (taskDate.length !== 10) {
+      return false
+    }
+
     const parts = taskDate.split("/");
 
     if (parts.length !== 3) {
@@ -57,7 +92,7 @@ function AddTaskModal(props) {
       month < 1 ||
       month > 12 ||
       year < currentYear ||
-      year > 9999
+      year > 2100
     ) {
       return false;
     }
@@ -75,15 +110,15 @@ function AddTaskModal(props) {
       // Valida se o ano inserido após o construtor é o mesmo do que foi inserido anteriormente
       dateObject.getFullYear() === year;
 
-    if (isValid === true) {
-      setTaskDate(dateObject.toLocaleDateString("pt-BR"));
-    }
-
-    return isValid;
+    return isValid ? true : false;
   }
 
-  function validateTask(title, description) {
-    if (title == "") {
+  function validateFullTask() {
+    const isTaskTitleValid = validateTaskTitle(taskTitle);
+    const isTaskDescriptionValid = validateTaskDescription(taskDescription);
+    const isTaskDateValid = validateTaskDate(taskDate);
+
+    if (!isTaskTitleValid) {
       props.setAlert({
         isError: true,
         isVisible: true,
@@ -94,7 +129,7 @@ function AddTaskModal(props) {
       return false;
     }
 
-    if (description == "") {
+    if (!isTaskDescriptionValid) {
       props.setAlert({
         isError: true,
         isVisible: true,
@@ -105,11 +140,7 @@ function AddTaskModal(props) {
       return false;
     }
 
-    const isDateValid = validateTaskDate(taskDate);
-    let currentDate = new Date();
-    currentDate = currentDate.toLocaleDateString("pt-BR");
-
-    if (!isDateValid || currentDate < taskDate) {
+    if (!isTaskDateValid || currentDate < taskDate) {
       props.setAlert({
         isError: true,
         isVisible: true,
@@ -144,6 +175,7 @@ function AddTaskModal(props) {
             inputValue={taskTitle}
             setVariable={setTaskTitle}
             textFormatter={formatTaskTitle}
+            maxLength={maxTitleLength}
           />
 
           <InputTextArea
@@ -154,6 +186,7 @@ function AddTaskModal(props) {
             setVariable={setTaskDescription}
             textFormatter={formatTaskDescription}
             rows={"5"}
+            maxLength={maxDescriptionLength}
           />
 
           <InputDate
@@ -170,11 +203,8 @@ function AddTaskModal(props) {
             className="w-full text-white flex justify-center bg-indigo-dye border-indigo-dye border-[2px] rounded-md p-3 font-bold
         hover:bg-argentinian-blue hover:text-white hover:border-argentinian-blue transition duration-100"
             onClick={() => {
-              const isTaskValidated = validateTask(
-                taskTitle,
-                taskDescription,
-                taskDate
-              );
+              const isTaskValidated =  validateFullTask();
+
               if (isTaskValidated) {
                 props.addTask(taskTitle, taskDescription, taskDate, 0);
 

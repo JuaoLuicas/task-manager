@@ -39,6 +39,7 @@ function App() {
           <TaskListPage
             tasks={tasks}
             deletedTask={deletedTask}
+            addedTask={addedTask}
             changeTaskStatus={changeTaskStatus}
             deleteTask={deleteTask}
             addTask={addTask}
@@ -73,6 +74,7 @@ function App() {
 // Tasks Page Functions
   const [deletedTask, setDeletedTask] = useState([]);
   const [blockCursor, setBlockCursor] = useState(false);
+  const [addedTask, setAddedTask] = useState([]);
 
   function changeTaskStatus(taskId, status) {
     const newTasks = tasks.map((task) => {
@@ -80,7 +82,7 @@ function App() {
         switch (status) {
           case 0:
             task.isCompleted = false;
-            return { ...task, statusNumber: 0, statusName: 'Não concluído' };
+            return { ...task, statusNumber: 0, statusName: 'Não iniciado' };
           case 1:
             task.isCompleted = false;
             return { ...task, statusNumber: 1, statusName: 'Em andamento' };
@@ -118,7 +120,7 @@ function App() {
 
       // Libera o cursor de todos os itens
       setBlockCursor(false);
-    }, 800);
+    }, 1000);
   }
 
   function addTask(title, description, date) {
@@ -128,11 +130,24 @@ function App() {
       description: description,
       date: date,
       statusNumber: 0,
-      statusName: 'Não concluído',
+      statusName: 'Não iniciado',
       isCompleted: false,
     };
 
     setTasks([...tasks, newTask]);
+
+    setBlockCursor(true);
+
+    setAddedTask((added) => [...added, newTask.id]);
+
+    // Tempo de execução da animação de adição
+    setTimeout(() => {
+      
+      setAddedTask((added) => added.filter((id) => id !== newTask.id));
+
+      setBlockCursor(false);
+    }, 1000);
+
   }
 
   //Graphic Page Functions
