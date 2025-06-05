@@ -11,7 +11,6 @@ function AddTaskModal(props) {
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [taskDate, setTaskDate] = useState("");
-  const currentDate = new Date;
   const maxTitleLength = 50;
   const maxDescriptionLength = 300;
 
@@ -117,6 +116,8 @@ function AddTaskModal(props) {
     const isTaskTitleValid = validateTaskTitle(taskTitle);
     const isTaskDescriptionValid = validateTaskDescription(taskDescription);
     const isTaskDateValid = validateTaskDate(taskDate);
+    let currentDate = new Date;
+    currentDate = currentDate.toLocaleDateString("pt-BR");
 
     if (!isTaskTitleValid) {
       props.setAlert({
@@ -140,7 +141,7 @@ function AddTaskModal(props) {
       return false;
     }
 
-    if (!isTaskDateValid || currentDate < taskDate) {
+    if (!isTaskDateValid || currentDate > taskDate) {
       props.setAlert({
         isError: true,
         isVisible: true,
