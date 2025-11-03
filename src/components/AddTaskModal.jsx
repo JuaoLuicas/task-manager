@@ -15,7 +15,7 @@ function AddTaskModal(props) {
   const maxDescriptionLength = 300;
 
   function formatTaskTitle(taskTitle, maxLength) {
-    const formattedTitle = taskTitle.charAt(0).toUpperCase() + taskTitle.slice(1);
+    let formattedTitle = taskTitle.charAt(0).toUpperCase() + taskTitle.slice(1);
 
     if (formattedTitle.length > maxLength) {
       formattedTitle = formattedTitle.slice(0, maxLength);
@@ -25,7 +25,7 @@ function AddTaskModal(props) {
   }
 
   function formatTaskDescription(taskDescription, maxLength) {
-    const formattedDescription = taskDescription.charAt(0).toUpperCase() + taskDescription.slice(1);
+    let formattedDescription = taskDescription.charAt(0).toUpperCase() + taskDescription.slice(1);
 
     if (formattedDescription.length > maxLength) {
       formattedDescription = formattedDescription.slice(0, maxLength);
